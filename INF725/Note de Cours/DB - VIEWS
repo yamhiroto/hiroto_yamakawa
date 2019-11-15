@@ -1,0 +1,181 @@
+
+Transactions :
+a logical unit of work consisting of one or more sql statements
+
+> atomic transaction : fully executed or rolled Back as if it never occurred:
+> isolation from concurrent transactions:
+>>changes made by a transaction are not visible to other concurrently executing htransactions until the transaction complete
+
+>transaction model based on two sql statements:
+-commit
+-Rollback
+
+
+
+une transaction commit : on veut que les transactions soit executee
+rollback : on veut revenir a letape avant le commit
+
+
+une transaction est suppos2 verifier 4 principes :acid
+
+principe d'isolation:
+plusieurs utilisateurs souhaitant acceder a la base de donnees.
+
+pour garantir la consistence des donnees> 9 il faut que ce que les utilisateurs voulaient faire de base 
+
+base sur le principe de la serialisation:
+une transaction toute entiere, puis une autre. 
+ base elle meme sur le principe des lock
+
+principe de durabilite :
+
+
+
+principe de consistence : respecter toutes les contraintes d'integrite.
+
+
+VIEWS
+definition
+View Creation and Destruction
+Updating Views
+Type of views
+
+
+Principe des views: 
+One database often supports multiple applications
+>>slightly different pictures of the world.
+>>view help accommodate this variation without storing redundant data:
+
+les tables ont ete crees initialement pour des problemes de consistences, pas pour l'utilisation finale pour les utilisatuers. views utiles pour :
+
+- pour cacher certaines donnees a des utilisateurs
+- pour simplifier les requetes qui reviennent souvent (join), en stockant les infos dans une vue.  ( on ne stocke pas les donnes physiquement, on ne les duplique pas, les vues sont virtuelles)
+
+une base de donnees constuite sur 3 niveau:
+- physique
+- conceptuel
+- vues
+
+
+au niveau physique :
+comment elles sont physiquement stocke , les index, managed by data admin
+
+au niveau conceptuel
+comment mettre en place les schema d;une relationm, creation de table 
+
+au niveau externes(vues) visible pour l'utilisateur final.
+quel acces donner aux utilisateurs finaux, quel data cachcer.
+
+
+data independance:
+entre les differentes couches. une modif dans l'une ne devrait pas avoir d'impact sur les autres.
+1. independence physique
+on peut modfier le schema physique sans avoir a reecrire lapplication
+2. independence logique
+on peut modifier le schema logique(creer des relaions ) sans avoir a reecrire l'application.
+
+
+Une vue : requete SELECT que je suis entrain de stocker
+pour en creer une :
+
+Create VIEW View_name AS
+<query> 
+
+
+pour la detruire :
+drop view 
+
+EXEMPLE de creation de vue :
+views pour l'extensibilite : (metric de pound au kilo/ acheteur de Seattle
+
+l'utilisateur final peut ne pas etre conscient qu'il utilise une vue
+SeattleVIew : VIew
+Product : relation
+
+expanded query:
+remplacer vue par sa definition
+
+une vue v1 depend directement de v2 si v2 a ete utilise pour definir v1
+une vue v1 depend de v2 si il y a un chemin de dependence de v1 a v2
+une vue v est recursive if elle depend de elle meme dans sa definition
+
+On ne peut pas inserer un tuble dans une vue ( qui est virtuelle), mais on peut la reformuler pour essayer de l'inserer dans la table originale (en respectant son schema, quitte a rajouter des valeurs nulls pour les attributs)> ce n'est pas toujours ideal car on ne peut pas avoir de clef nul pour les primary key par exemple ( Securite social)
+
+Lorsque la vue est cree a partir d'une jointure, ca devient encore plus complique.
+
+les implementations sql autorisnet les updates uniquement pour des views simple, caracterise par :
+
+>From une seul table
+>dans select : seulement des attributs, pas de fonction d'aggregation( sum count, group by, having) ou distinct(qui vire les doublons)
+>les attributs non selectionnee seront definis a Null
+ 
+dans sqllite views :read only, on ne pourra pas lancer Delete,Insert or Update sur une vue
+
+
+Difference entre vue virtuelle et materialise < ce dernier est stocke.
+l'inconvenient de la vue virtuelle @ il faut la recalculer a chaque fois avant de pouvoir l'utiliser. (l'avantage, c'est qu'elle est a jourm, et reflete direcement les modifs effectues sur la table)
+
+Materialise:
+++ plus rapide en calcul
+-- la taille du fichier a stocker
+-- la mise a jour : quest ce que je fais quqnd on modifie les tables sur lesquel la vue est base (table non mise a jour), ou qu'on modifie la vue elle meme ( dans ce cas meme probleme qu'avec les vues virtuelles_
+
+une vue : requete stockee
+
+
+DROIT
+
+Si je donne des droits a un utilisqteur, il pourra les donner a quelquùun dùautre
+Confidentialite
+Securite
+Integrite
+disponibilite
+
+ROles : set de privilege predefini, plus efficace que des privileges directs.
+
+celui qui cree l'objet a tous les droits sur l'objet
+role de l'administrateur
+
+
+Privileges:
+objet : table ou vue
+
+grant priilege on Object
+To user/role
+with grant option << l'utilisateur a qui j4ai donne le privilege pourra le donner a quelqun
+
+mais seul celui qui a cree l'objet peut create ,alter et drop la table
+
+EXAMPLE:
+
+shop_owner est un role
+
+On peut donner un privilege sur une colonne d'une table : 
+GRANT UPDATE (price_Day) ON Movie TO movie_staff
+
+on peut donner un privilege sur une vue :
+GRANT SELECT ON MovieView TO Customers
+
+
+POUR Retirer les privileges:
+CASCADE : retirer le droit a une personne et a tous ses enfants
+
+Si une personne a recu le meme droit par deux personnes distinctes, les deux personnes doivent lui retirer le meme privilege
+
+on ne peut pas retirer le privilege donne par quelqu'un d'autre
+
+Restrict : une erreur s'il y a des enfants. du coup il faut d'abord le retirer au dernier enfant et remonter
+
+
+
+
+
+
+
+
+
+
+
+
+
+

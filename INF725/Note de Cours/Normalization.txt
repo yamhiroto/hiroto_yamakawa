@@ -1,0 +1,50 @@
+1st Normal Form :
+- Each cell are single valued
+- entries in a column are of same type
+- rows are uniquely identified with an unique ID
+  
+2nd Normal Form : 
+- 1st NF
+- All attributes Non-key Columns are dependent on the key
+
+3rd Normal Form : 
+- 2 NF
+- ALl columns can be determined only by the Key in the table and no other column
+
+
+a composite key:
+a candidate key that consists of two or more attributes (table columns) that uniquely identify an entity occurrence (table row). 
+
+A compound key :
+a composite key for which each attribute that makes up the key is a simple (foreign) key in its own right. 
+
+
+Field and Columns are the same thing.
+
+
+NP(Primary Key), NOM,PRENOM,REGION
+NV(Primary Key), CRU, DEGRE, MILL
+NP, NV, (Composite Key), QTE
+
+
+
+Master 2:
+NV(Primary key), Cru, DEGRE, MILL
+NB(Primary Key), NOM, PRENOM
+NB,NV,DATES,LIEU
+DATE,LIEU,REGION,TYPE
+
+
+A functional dependency (FD) is a relationship between two attributes, typically between the PK and other non-key attributes within a table.
+
+ For any relation R, attribute Y is functionally dependent on attribute X (usually the PK), if :
+
+___________________________________________________________________________________
+for every valid instance of X, that value of X uniquely determines the value of Y. 
+___________________________________________________________________________________
+
+This relationship is indicated by the representation below :
+
+X ———–> Y
+
+The left side of the above FD diagram is called the determinant, and the right side is the dependent.
